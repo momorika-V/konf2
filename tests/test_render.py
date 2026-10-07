@@ -13,6 +13,9 @@ from plantuml import build_plantuml, save_plantuml
 from diagram import render_diagram_png
 from bitmap_font import FONT, FONT_HEIGHT, GLYPH_WIDTH
 
+MIN_PNG_BYTES = 100
+EMPTY_SIZE = 0
+
 
 class TestFont(unittest.TestCase):
     """Проверки целостности растрового шрифта."""
@@ -55,7 +58,7 @@ class TestPngRender(unittest.TestCase):
             with open(path, "rb") as saved:
                 data = saved.read()
             self.assertTrue(data.startswith(b"\x89PNG\r\n\x1a\n"))
-            self.assertGreater(len(data), 100)
+            self.assertGreater(len(data), MIN_PNG_BYTES)
         finally:
             os.remove(path)
 
@@ -64,7 +67,7 @@ class TestPngRender(unittest.TestCase):
         os.close(handle)
         try:
             render_diagram_png({"A": []}, "A", path)
-            self.assertTrue(os.path.getsize(path) > 0)
+            self.assertTrue(os.path.getsize(path) > EMPTY_SIZE)
         finally:
             os.remove(path)
 

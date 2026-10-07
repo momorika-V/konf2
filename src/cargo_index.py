@@ -10,6 +10,9 @@ import urllib.request
 DEFAULT_INDEX_URL = "https://index.crates.io"
 HTTP_TIMEOUT_SECONDS = 30
 NORMAL_KINDS = (None, "normal")
+NAME_LEN_SINGLE = 1
+NAME_LEN_DOUBLE = 2
+NAME_LEN_TRIPLE = 3
 
 
 class CargoIndexError(Exception):
@@ -19,11 +22,11 @@ class CargoIndexError(Exception):
 def build_index_path(package):
     """Построить путь пакета в sparse-индексе по правилам Cargo."""
     name_len = len(package)
-    if name_len == 1:
+    if name_len == NAME_LEN_SINGLE:
         return f"1/{package}"
-    if name_len == 2:
+    if name_len == NAME_LEN_DOUBLE:
         return f"2/{package}"
-    if name_len == 3:
+    if name_len == NAME_LEN_TRIPLE:
         return f"3/{package[0]}/{package}"
     return f"{package[:2]}/{package[2:4]}/{package}"
 
