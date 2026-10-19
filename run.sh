@@ -1,3 +1,5 @@
 #!/bin/sh
-# Запуск приложения визуализации графа зависимостей.
 python3 src/main.py "$@"
+echo
+printf "Нажми Enter, чтобы закрыть..."
+read line

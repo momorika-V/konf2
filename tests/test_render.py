@@ -9,9 +9,9 @@ sys.path.insert(
     0, os.path.join(os.path.dirname(__file__), "..", "src")
 )
 
-from plantuml import build_plantuml, save_plantuml
-from diagram import render_diagram_png
-from bitmap_font import FONT, FONT_HEIGHT, GLYPH_WIDTH
+from main import (
+    build_plantuml, render_diagram_png, FONT, FONT_HEIGHT, GLYPH_WIDTH,
+)
 
 MIN_PNG_BYTES = 100
 EMPTY_SIZE = 0
@@ -21,6 +21,7 @@ class TestFont(unittest.TestCase):
     """Проверки целостности растрового шрифта."""
 
     def test_all_glyphs_have_correct_shape(self):
+        """Проверка: all glyphs have correct shape."""
         for char, glyph in FONT.items():
             message = f"Некорректный глиф: {char!r}"
             self.assertEqual(len(glyph), FONT_HEIGHT, message)
@@ -33,6 +34,7 @@ class TestPlantUml(unittest.TestCase):
     """Проверки текстового представления графа."""
 
     def test_basic_diagram(self):
+        """Проверка: basic diagram."""
         edges = {"A": ["B"], "B": []}
         text = build_plantuml(edges)
         self.assertIn("@startuml", text)
@@ -40,6 +42,7 @@ class TestPlantUml(unittest.TestCase):
         self.assertIn("[A] --> [B]", text)
 
     def test_sorted_output(self):
+        """Проверка: sorted output."""
         edges = {"B": ["A"], "A": ["Z"]}
         lines = build_plantuml(edges).splitlines()
         first_edge = lines[1]
@@ -50,6 +53,7 @@ class TestPngRender(unittest.TestCase):
     """Проверки сохранения PNG-файла."""
 
     def test_png_file_created(self):
+        """Проверка: png file created."""
         edges = {"A": ["B", "C"], "B": ["D"], "C": ["D"], "D": []}
         handle, path = tempfile.mkstemp(suffix=".png")
         os.close(handle)
@@ -63,6 +67,7 @@ class TestPngRender(unittest.TestCase):
             os.remove(path)
 
     def test_single_node(self):
+        """Проверка: single node."""
         handle, path = tempfile.mkstemp(suffix=".png")
         os.close(handle)
         try:
